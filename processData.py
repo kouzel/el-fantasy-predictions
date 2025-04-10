@@ -24,7 +24,7 @@ def calculateAdvanced(key,player):
         case _:
             return 0 
 
-def getStatisticCalculation(player):
+def getStatisticCalculation(player,isAllData):
     val = 0
     keys = calculationCoefficientBaseFields.keys()
     for key in keys:
@@ -32,15 +32,15 @@ def getStatisticCalculation(player):
     for key in advancedCalculationKeys:
         val+=calculateAdvanced(key,player=player)
 
-    return round(val,2)
+    return  round(val/float(player['gp']),2) if isAllData else round(val,2)
 
-def processData(data):
+def processData(data,isAllData=False):
     reformed=[]
     for item in data:
         reformed.append({'id':item['id'],
                          'name':item['first_name']+' '+item['last_name'],
                          'credit':item['cr'],
-                         'calculated':getStatisticCalculation(item),
+                         'calculated':getStatisticCalculation(item,isAllData),
                          'teamId':item['team_id'],
                          'team_name':item['team_name'],
                          'position':item['position']
